@@ -1,5 +1,5 @@
 {
    // config AstroUtilities 
-   TString AstroPath = gSystem->Getenv("DATAASTRO");
-   gROOT->ProcessLine(Form(".x %s/AstroUtilities/scripts/LibsPersoAstroRootLogon.C+", AstroPath.Data()));
+   TString AstroPath = gSystem->Getenv("ASTROTOOLS");
+   gROOT->ProcessLine(Form(".x %s/tools/scripts/LibsPersoAstroRootLogon.C+", AstroPath.Data()));
 }

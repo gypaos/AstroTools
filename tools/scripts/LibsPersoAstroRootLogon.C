@@ -25,8 +25,8 @@
 void LibsPersoAstroRootLogon(bool verbosemode = false)
 {
    TString currentpath = gSystem->Getenv("PWD");
-   TString path = gSystem->Getenv("DATAASTRO");
-   path += "/AstroUtilities";
+   TString path = gSystem->Getenv("ASTROTOOLS");
+   path += "/tools";
    
    // Add include path
    if (verbosemode) std::cout << "LibsPersoAstro: adding include path : " << path << std::endl;

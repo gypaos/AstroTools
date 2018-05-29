@@ -41,16 +41,16 @@ StellarYield::StellarYield(const std::string& type, const std::string& file, con
      m_YieldFile(),
      m_StellarYieldSet()
 {
-   // check and get DATAASTRO env. variable
-   char const* tmp = getenv("DATAASTRO");
+   // check and get ASTROTOOLS env. variable
+   char const* tmp = getenv("ASTROTOOLS");
    if (tmp == NULL) {
-      std::cout << "DATAASTRO environment variable not defined" << std::endl;
+      std::cout << "ASTROTOOLS environment variable not defined" << std::endl;
       exit(1);
    } else {
       m_YieldFile = tmp;
    }
 
-   m_YieldFile += "/Yields";
+   m_YieldFile += "/data/models/Yields";
    // construct yield file to read
    if (type=="LC17") {
       m_YieldFile += "/LC17";
@@ -204,6 +204,7 @@ void StellarYield::readFile_LC17()
    } 
    else {
       std::cout << "Problem opening yield file " << m_YieldFile << std::endl;
+      exit(1);
    }
 
    // close yield file
@@ -265,6 +266,7 @@ void StellarYield::readFile_CL13()
    }
    else {
       std::cout << "Problem opening yield file " << m_YieldFile << std::endl;
+      exit(1);
    }
 
    // close yield file

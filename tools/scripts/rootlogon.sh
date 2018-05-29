@@ -20,23 +20,23 @@ if [ -f ~/.rootlogon.C ];
 then
   echo 'File .rootlogon.C already exists: attempt to modified it'
   # Check if AstroData stuff is already in
-  SEARCH=$(grep DATAASTRO ~/.rootlogon.C)
+  SEARCH=$(grep ASTROTOOLS ~/.rootlogon.C)
   echo $SEARCH
   if [ ! -n "$SEARCH" ];
   then
-    echo 'Appending AstroUtilities command lines to .rootlogon.C'
+    echo 'Appending AstroTools command lines to .rootlogon.C'
     sed -i -e 's#{#{\
-   // config AstroUtilities\
-   TString AstroPath = gSystem->Getenv(\"DATAASTRO\");\
-   gROOT->ProcessLine(Form(\".x %s/AstroUtilities/scripts/LibsPersoAstroRootLogon.C+\", AstroPath.Data()));\
+   // config AstroTools\
+   TString AstroPath = gSystem->Getenv(\"ASTROTOOLS\");\
+   gROOT->ProcessLine(Form(\".x %s/tools/scripts/LibsPersoAstroRootLogon.C+\", AstroPath.Data()));\
 #g' ~/.rootlogon.C 
   else
-    echo 'Some AstroUtilities libraries already loaded in .rootlogon.C; please check the file'
+    echo 'Some AstroTools libraries already loaded in .rootlogon.C; please check the file'
   fi
 
 else
   echo 'File .rootlogon.C was created'
-  cp $DATAASTRO/AstroUtilities/scripts/rootlogon.C ~/.rootlogon.C
+  cp $ASTROTOOLS/tools/scripts/rootlogon.C ~/.rootlogon.C
 fi
 
 
