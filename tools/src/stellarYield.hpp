@@ -30,7 +30,8 @@ class StellarYield
    public:
       // constructors
       StellarYield();
-      StellarYield(const std::string&, const std::string&, const std::string&);
+      StellarYield(const std::string&, const std::string&, const std::string&, bool = 1);
+      virtual ~StellarYield();
 
       // overload [] operator
       Star operator[] (Star& star) {
@@ -50,12 +51,21 @@ class StellarYield
       void readFile();
       void readFile_LC17();
       void readFile_CL13();
+      void clear();
       void print() const;
+
+      // setters
+      void  setLog10(const bool isLog10)     {m_isLog10 = isLog10; clear(); readFile();}
+      // getters
+      const std::string& getType() const     {return m_YieldType;}
+      const std::string& getOption() const   {return m_YieldOption;}
+      const std::string& getFile() const     {return m_YieldFile;}
 
    private:
       std::string    m_YieldType;
       std::string    m_YieldOption;
       std::string    m_YieldFile;
+      bool           m_isLog10;
       std::set<Star> m_StellarYieldSet;
 };
 

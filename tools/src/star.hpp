@@ -34,6 +34,7 @@ class Star
       // constructors
       Star();
       Star(double, double);
+      virtual ~Star();
 
       // overloading operators
       // <

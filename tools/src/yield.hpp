@@ -28,10 +28,11 @@ class Yield
       // constructors
       Yield();
       Yield(std::vector<double>, std::vector<double>);
+      virtual ~Yield();
 
       // methods
-      double  eval(double);
-      double  integrateIMF();
+      double  eval(double) const;
+      double  integrateIMF(double = 2.35, bool = 0) const;
       TGraph* getGraph();
       void    clear();
       void    print() const;
@@ -39,19 +40,23 @@ class Yield
    public:
       // setters
       void setStellarMass(const double mass)                {m_stellarMass.push_back(mass);}
-      void setYield(const double yield)                     {m_yield.push_back(yield);}
       void setStellarMass(const std::vector<double>& mass)  {m_stellarMass = mass;}
+      void setYield(const double yield)                     {m_yield.push_back(yield);}
       void setYield(const std::vector<double>&  yield)      {m_yield = yield;}
+      void setLog10(const bool isLog10)                     {m_isLog10 = isLog10;}
       // getters
       double getStellarMass(const unsigned int i) const     {return m_stellarMass[i];}
       double getYield(const unsigned int i) const           {return m_yield[i];}
 
    private:
-      std::vector<double> m_stellarMass;  // in log10
-      std::vector<double> m_yield;        // in log10
-      double              m_minMass;
-      double              m_maxMass;
-      TGraph*             m_grYield;
+      std::vector<double>  m_stellarMass;
+      std::vector<double>  m_yield;
+      double               m_minMass;
+      double               m_maxMass;
+      // if m_isLog10 = 0/1, m_stellarMass, m_yield, m_minMass and m_maxMass
+      // are in lin/log10 scale. Default is 1 (log10)
+      bool                 m_isLog10;
+      TGraph*              m_grYield;
 };
 
 #endif

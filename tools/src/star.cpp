@@ -38,6 +38,13 @@ Star::Star(double metallicity, double velocity)
 
 
 
+Star::~Star()
+{
+   clear();
+}
+
+
+
 TGraph* Star::getIsotopicGraph(const std::string& isotope)
 {
    return m_YieldTable[isotope].getGraph();

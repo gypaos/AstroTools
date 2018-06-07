@@ -30,15 +30,17 @@ StellarYield::StellarYield()
    : m_YieldType(),
      m_YieldOption(),
      m_YieldFile(),
+     m_isLog10(1),
      m_StellarYieldSet()
 {
 }
 
 
-StellarYield::StellarYield(const std::string& type, const std::string& file, const std::string& option)
+StellarYield::StellarYield(const std::string& type, const std::string& file, const std::string& option, bool islog10)
    : m_YieldType(type),
      m_YieldOption(option),
      m_YieldFile(),
+     m_isLog10(islog10),
      m_StellarYieldSet()
 {
    // check and get ASTROTOOLS env. variable
@@ -80,6 +82,13 @@ StellarYield::StellarYield(const std::string& type, const std::string& file, con
 
    // read yield file
    readFile();
+}
+
+
+
+StellarYield::~StellarYield()
+{
+   clear();
 }
 
 
@@ -144,8 +153,9 @@ void StellarYield::readFile_LC17()
                std::stringstream smass(line.substr(28)); 
                while (getline(smass, item, ' ')) {
                   if (item.compare(0,1,"") != 0) {
-                     v_mass.push_back(log10(atof(item.substr(0,3).c_str())));
-                     //v_mass.push_back(atof(item.substr(0,3).c_str()));
+                     double mass = atof(item.substr(0,3).c_str());
+                     if (m_isLog10) mass = log10(mass);
+                     v_mass.push_back(mass);
                      //std::cout << item << std::endl;
                      //std::cout << atof(item.substr(0,3).c_str()) << std::endl;
                   }
@@ -184,16 +194,23 @@ void StellarYield::readFile_LC17()
             std::stringstream syields(line.substr(28)); 
             while (getline(syields, item, ' ')) {
                if (item.compare(0,1,"") != 0) {
-                  v_yield.push_back(log10(atof(item.c_str())));
-                  //v_yield.push_back(atof(item.c_str()));
+                  double yieldValue = atof(item.c_str());
+                  if (m_isLog10) {
+                     yieldValue = log10(yieldValue);
+                     if (!std::isfinite(yieldValue)) yieldValue = -1000;
+                  }
+                  v_yield.push_back(yieldValue);
                }
             }
          }
          // declare Yield, feed Star and fill set if not header line
          if (!isHeader) {
             // declare Yield object
+            //std::cout << "LC17 before yield construction" << std::endl;
             Yield yield(v_mass, v_yield);
+            yield.setLog10(m_isLog10);
             // feed Star class
+            //std::cout << "LC17 before star getYield" << std::endl;
             star.setYield(iso_ele, yield);
          }
          // clear yield vector
@@ -222,9 +239,17 @@ void StellarYield::readFile_CL13()
    // physics variables
    double metallicity = 1;    // Z_sun
    double a_mass[] = {13, 15, 20, 25, 30, 40, 60, 80, 120};
-   std::vector<double> v_mass;
-   for (int i = 0; i < sizeof(a_mass) / sizeof(double); i++) v_mass.push_back(log10(a_mass[i]));
-   std::vector<double> v_yield;
+   std::vector<double> v_mass, v_yield;
+   if (m_isLog10) {
+      for (int i = 0; i < sizeof(a_mass) / sizeof(double); i++) {
+         v_mass.push_back(log10(a_mass[i]));
+      }
+   }
+   else {
+      for (int i = 0; i < sizeof(a_mass) / sizeof(double); i++) {
+         v_mass.push_back(a_mass[i]);
+      }
+   }
    // initialize star object
    Star star;
    star.setMetallicity(metallicity);
@@ -251,11 +276,17 @@ void StellarYield::readFile_CL13()
          std::stringstream syields(line.substr(7)); 
          while (getline(syields, item, ' ')) {
             if (item.compare(0,1,"") != 0) {
-               v_yield.push_back(log10(atof(item.c_str())));
+               double yieldValue = atof(item.c_str());
+               if (m_isLog10) {
+                  yieldValue = log10(yieldValue);
+                  if (!std::isfinite(yieldValue)) yieldValue = -1000;
+               }
+               v_yield.push_back(yieldValue);
             }
          }
          // declare Yield object
          Yield yield(v_mass, v_yield);
+         yield.setLog10(m_isLog10);
          // feed Star class
          star.setYield(iso_ele, yield);
          // clear yield
@@ -271,6 +302,13 @@ void StellarYield::readFile_CL13()
 
    // close yield file
    inFile.close();
+}
+
+
+
+void StellarYield::clear()
+{
+   m_StellarYieldSet.clear();
 }
 
 
