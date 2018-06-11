@@ -4,3 +4,6 @@ find_package(ROOT REQUIRED)
 
 # build libStellarYield shared library
 add_library(StellarYield SHARED yield.cpp star.cpp stellarYield.cpp)
+
+# build libStellarYield shared library
+add_library(Isotope SHARED nucleusProperties.cpp)

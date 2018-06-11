@@ -8,6 +8,12 @@ add_executable(testStellarYield testStellarYield.cpp)
 # link library rules
 target_link_libraries(testStellarYield StellarYield ${ROOT_LIBRARIES})
 
+# add the executable
+add_executable(testIsotope testIsotope.cpp)
+
+# link library rules
+target_link_libraries(testIsotope Isotope)
+
 # install main
 #install(PROGRAMS testStellarYield DESTINATION ${CMAKE_BINARY_OUTPUT_DIRECTORY}) 
 
