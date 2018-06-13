@@ -24,13 +24,17 @@ class NucleusProperties
       // constructors
       NucleusProperties();
       NucleusProperties(const std::string&, const int, const int, const double,
-                        const double, const double, const std::string&);
+                        const double, const std::string&, const std::string&);
       virtual ~NucleusProperties();
 
       // methods
-      bool     isMassExcessExperimental() const    {return m_massExcessExperimental;}
-      void     clear();
-      void     print() const;
+      bool           isMassExcessExperimental() const    {return m_massExcessExperimental;}
+      bool           isStable() const                    {return (m_halfLife == -1);}
+      std::string    getNameLatex() const;
+      void           parseHalfLife();
+      void           parseSpinParity();
+      void           clear();
+      void           print() const;
 
    public:
       // setters
@@ -38,13 +42,18 @@ class NucleusProperties
       void setAtomicCharge(const int atomicCharge)       {m_atomicCharge = atomicCharge;}
       void setMassNumber(const int massNumber)           {m_massNumber   = massNumber;}
       void setMassExcess(const double massExcess, 
-                         const double massExcessUncertainty = 0)   {
+                         const double massExcessUncertainty = 0) {
          m_massExcess            = massExcess;
          m_massExcessUncertainty = massExcessUncertainty;
       }
       void setMassExcessExperimental(const bool massExcessExp) {m_massExcessExperimental = massExcessExp;}
-      void setHalfLife(const double halfLife)            {m_halfLife     = halfLife;}
-      void setSpinParity(const std::string& spinParity)  {m_spinParity   = spinParity;}
+      void setHalfLife(const std::string& halfLife)            {m_halfLifeString = halfLife; parseHalfLife();}
+      void setHalfLife(const double halfLife,
+                       const double halfLifeUncertainty = 0) {
+         m_halfLife            = halfLife;
+         m_halfLifeUncertainty = halfLifeUncertainty;
+      }
+      void setSpinParity(const std::string& spinParity)  {m_spinParity   = spinParity; parseSpinParity();}
 
       // getters
       std::string    getName() const         {return m_name;}
@@ -64,7 +73,10 @@ class NucleusProperties
       double         m_massExcess;
       double         m_massExcessUncertainty;
       bool           m_massExcessExperimental;
-      double         m_halfLife;    // in s
+      std::string    m_halfLifeString;
+      double         m_halfLife;                // in s
+      double         m_halfLifeUncertainty;     // in s
+      std::string    m_halfLifeUpperLower;      // upper/lower limit
       std::string    m_spinParity;
       double         m_spin;
       std::string    m_parity;
