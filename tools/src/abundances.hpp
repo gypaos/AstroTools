@@ -16,6 +16,7 @@
  
 // STL header
 #include <string>
+#include <cmath>
 
 
 class Abundances 
@@ -31,10 +32,12 @@ class Abundances
 
    public:
       // setters
-      void setName(const std::string& name)              {m_name          = name;}
-      void setAtomicCharge(const int atomicCharge)       {m_atomicCharge  = atomicCharge;}
-      void setMassNumber(const int massNumber)           {m_massNumber    = massNumber;}
-      void setNumberOfAtoms(const double nOfAtoms)       {m_numberOfAtoms = nOfAtoms;}
+      void setName(const std::string& name)              {m_name           = name;}
+      void setAtomicCharge(const int atomicCharge)       {m_atomicCharge   = atomicCharge;}
+      void setMassNumber(const int massNumber)           {m_massNumber     = massNumber;}
+      void setNumberOfAtoms(const double nOfAtoms)       {m_numberOfAtoms  = nOfAtoms; m_log10Xmass = log10(nOfAtoms);}
+      void setLog10Xmass(const double massFraction)      {m_log10Xmass     = log10(massFraction);}
+      void setPercentElement(const double percentEl)     {m_percentElement = percentEl;}
       // getters
       std::string    getName() const            {return m_name;}
       unsigned int   getAtomicCharge() const    {return m_atomicCharge;}
@@ -46,6 +49,9 @@ class Abundances
       unsigned int   m_atomicCharge;
       unsigned int   m_massNumber;
       double         m_numberOfAtoms;
+      double         m_log10Xatoms;
+      double         m_log10Xmass;
+      double         m_percentElement;
 };
 
 #endif

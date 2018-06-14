@@ -60,6 +60,9 @@ int main()
    iso.setIsotope("18Bul");
    cout << "is stable? " << iso.getProperties().isStable() << endl;
    iso.print();
+   iso.setIsotope("27Al");
+   cout << "is stable? " << iso.getProperties().isStable() << endl;
+   iso.print();
 
    return 0;
 }

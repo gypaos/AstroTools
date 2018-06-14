@@ -113,13 +113,36 @@ void Isotope::readAbundanceFile_Lodders09()
 {
    // variables
    std::string line;
+   unsigned int nCommentLines = 6;
    Abundances abundances; 
+   double totalMass = 0;
+   double numberOfAtoms, percentElement;
+   unsigned int atomicCharge, massNumber;
+   std::string isotopeName, elementName;
 
    // open file
    std::ifstream inputFile(m_fileNameAbundances.c_str());
    if (inputFile) {
-      // skip first 6 lines
-      unsigned int nCommentLines = 6;
+      // first reading of the file to determine total number of atoms
+      // skip comment lines
+      for (unsigned int i = 0; i < nCommentLines; i++) getline(inputFile, line);
+      while (getline(inputFile, line)) {
+         // skip empty lines
+         if (line.empty()) continue;
+         // skip element lines
+         if (line.compare(0,1," ") == 0) continue;
+         // get mass number and number of atoms
+         massNumber    = atoi(line.substr(7,3).c_str());
+         numberOfAtoms = atof(line.substr(21,line.length()-21).c_str());
+         // calculate total mass
+         totalMass    += massNumber * numberOfAtoms;
+      }
+      // go back at beginning of the file
+      inputFile.clear();
+      inputFile.seekg(0L, std::ios::beg);
+
+      // second reading of the file
+      // skip comment lines
       for (unsigned int i = 0; i < nCommentLines; i++) getline(inputFile, line);
       while (getline(inputFile, line)) {
          // skip empty lines
@@ -127,24 +150,27 @@ void Isotope::readAbundanceFile_Lodders09()
          // skip element lines
          if (line.compare(0,1," ") == 0) continue;
          // get atomic charge & mass number
-         unsigned int atomicCharge = atoi(line.substr(0,2).c_str());
-         unsigned int massNumber   = atoi(line.substr(7,3).c_str());
+         atomicCharge = atoi(line.substr(0,2).c_str());
+         massNumber   = atoi(line.substr(7,3).c_str());
          // build isotope name
-         std::string elementName = line.substr(3,4);
+         elementName = line.substr(3,4);
          elementName.erase(std::remove_if(elementName.begin(), elementName.end(), ::isspace), elementName.end());
          std::stringstream sstm;
          sstm << massNumber << elementName;
-         std::string isotopeName = sstm.str();
+         isotopeName = sstm.str();
+         // get isotopic abundance (%) for associated element
+         percentElement = atof(line.substr(12,9).c_str());
          // get number of atoms
-         double numberOfAtoms = atof(line.substr(21,line.length()-21).c_str());
+         numberOfAtoms = atof(line.substr(21,line.length()-21).c_str());
          // fill NucleusProperties object
          abundances.setName(isotopeName);
          abundances.setAtomicCharge(atomicCharge);
          abundances.setMassNumber(massNumber);
          abundances.setNumberOfAtoms(numberOfAtoms);
+         abundances.setLog10Xmass(massNumber*numberOfAtoms/totalMass);
+         abundances.setPercentElement(percentElement);
          // populate map
          m_isotopeAbundancesTable[isotopeName] = abundances;
-         m_isotopeAbundancesTable[isotopeName].print();
          // clear Abundances object
          abundances.clear();
       }
@@ -224,7 +250,7 @@ void Isotope::readPropertiesFile()
 
 void Isotope::setIsotope(const std::string& isotope)
 {
-   //  
+   // assign m_properties 
    if (m_isotopePropertiesTable.find(isotope) != m_isotopePropertiesTable.end()) {
       m_properties = m_isotopePropertiesTable[isotope];
    }
@@ -233,7 +259,7 @@ void Isotope::setIsotope(const std::string& isotope)
       m_properties.clear();
    }
 
-   // 
+   // assign m_abundances
    if (m_isotopeAbundancesTable.find(isotope) != m_isotopeAbundancesTable.end()) {
       m_abundances = m_isotopeAbundancesTable[isotope];
    }
