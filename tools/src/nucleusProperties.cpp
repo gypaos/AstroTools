@@ -71,6 +71,50 @@ NucleusProperties::~NucleusProperties()
 
 
 
+// return half life in units specified in option
+double NucleusProperties::getHalfLife(const std::string& option) const
+{
+   // converting half life in seconds
+   double  s = 1;
+   double  m = 60*s;
+   double  h = 60*m;
+   double  d = 24*h;
+   double  y = 365*d;
+   double ky = 1e3*y;
+   double My = 1e6*y;
+   double Gy = 1e9*y;
+   double ms = 1e-3*s;
+   double us = 1e-6*s;
+   double ns = 1e-9*s;
+   double ps = 1e-12*s;
+   double fs = 1e-15*s;
+   double as = 1e-18*s;
+   double zs = 1e-21*s;
+   double ys = 1e-24*s;
+   double conversion = s;
+
+   if (option.compare(0,1,"s")  == 0) conversion = s;
+   if (option.compare(0,1,"m")  == 0) conversion = m;
+   if (option.compare(0,1,"h")  == 0) conversion = h;
+   if (option.compare(0,1,"d")  == 0) conversion = d;
+   if (option.compare(0,1,"y")  == 0) conversion = y;
+   if (option.compare(0,2,"ky") == 0) conversion = ky;
+   if (option.compare(0,2,"My") == 0) conversion = My;
+   if (option.compare(0,2,"Gy") == 0) conversion = Gy;
+   if (option.compare(0,2,"ys") == 0) conversion = ys;
+   if (option.compare(0,2,"zs") == 0) conversion = zs;
+   if (option.compare(0,2,"as") == 0) conversion = as;
+   if (option.compare(0,2,"fs") == 0) conversion = fs;
+   if (option.compare(0,2,"ps") == 0) conversion = ps;
+   if (option.compare(0,2,"ns") == 0) conversion = ns;
+   if (option.compare(0,2,"us") == 0) conversion = us;
+   if (option.compare(0,2,"ms") == 0) conversion = ms;
+
+   return m_halfLife / conversion;
+}
+
+
+
 // return isotope name in latex syntax (useful for ROOT labeling axis)
 std::string NucleusProperties::getNameLatex() const
 {

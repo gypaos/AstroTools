@@ -63,6 +63,13 @@ int main()
    iso.setIsotope("27Al");
    cout << "is stable? " << iso.getProperties().isStable() << endl;
    iso.print();
+   iso.setIsotope("26Al");
+   cout << "is stable? " << iso.getProperties().isStable() << endl;
+   iso.print();
+   cout << "half-life: " << iso.getProperties().getHalfLife() << " s\t" 
+                         << iso.getProperties().getHalfLife("ky") << " kyr\t"
+                         << iso.getProperties().getHalfLife("My") << " Myr\t"
+                         << endl;
 
    return 0;
 }

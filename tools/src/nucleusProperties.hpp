@@ -30,6 +30,7 @@ class NucleusProperties
       // methods
       bool           isMassExcessExperimental() const    {return m_massExcessExperimental;}
       bool           isStable() const                    {return (m_halfLife == -1);}
+      double         getHalfLife(const std::string& = "s") const;
       std::string    getNameLatex() const;
       void           parseHalfLife();
       void           parseSpinParity();
@@ -60,7 +61,6 @@ class NucleusProperties
       unsigned int   getAtomicCharge() const {return m_atomicCharge;}
       unsigned int   getMassNumber() const   {return m_massNumber;}
       double         getMassExcess() const   {return m_massExcess;}
-      double         getHalfLife() const     {return m_halfLife;}
       std::string    getSpinPariy() const    {return m_spinParity;}
       double         getSpin() const         {return m_spin;}
       std::string    getParity() const       {return m_parity;}
