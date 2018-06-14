@@ -17,6 +17,7 @@
 
 // project headers
 #include "nucleusProperties.hpp"
+#include "abundances.hpp"
 
 // STL headers
 #include <map>
@@ -32,13 +33,14 @@ class Isotope
       virtual ~Isotope();
 
       // methods
-      void     constructFileNames();
-      void     readAbundanceFile();
-      void     readAbundanceFile_AG89();
-      void     readAbundanceFile_Lodders09();
-      void     readPropertiesFile();
-      void     clear();
-      void     print() const;
+      void constructFileNames();
+      void readAbundanceFile();
+      void readAbundanceFile_AG89();
+      void readAbundanceFile_Lodders09();
+      void readPropertiesFile();
+      void setIsotope(const std::string&);
+      void clear();
+      void print() const;
 
    public:
       // setters
@@ -50,21 +52,17 @@ class Isotope
          m_fileNameProperties = fileNameProperties;
          constructFileNames();
       }
-      void setIsotope(const std::string& isotope) {
-         m_properties = m_isotopePropertiesTable[isotope];
-         m_abundances = m_isotopeAbundanceTable[isotope];
-      }
       // getters
       NucleusProperties getProperties() const   {return m_properties;}
-      NucleusProperties getAbundances() const   {return m_abundances;}
+      Abundances        getAbundances() const   {return m_abundances;}
 
    private:
       std::string                               m_fileNameAbundances;
       std::string                               m_fileNameProperties;
-      std::map<std::string, NucleusProperties>  m_isotopeAbundanceTable;
+      std::map<std::string, Abundances>         m_isotopeAbundancesTable;
       std::map<std::string, NucleusProperties>  m_isotopePropertiesTable;
       NucleusProperties                         m_properties;
-      NucleusProperties                         m_abundances;
+      Abundances                                m_abundances;
 };
 
 #endif

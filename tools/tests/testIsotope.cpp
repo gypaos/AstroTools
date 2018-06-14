@@ -30,6 +30,8 @@ int main()
    // Isotope class test
    cout << "********** test Isotope class *****************************" << endl; 
    Isotope iso;
+//   Isotope iso("pipo", "nubase2016.txt");
+//   Isotope iso("pipo", "nubtab97.asc");
    iso.print();
    iso.setIsotope("4He");
    cout << "is stable? " << iso.getProperties().isStable() << endl;
@@ -53,6 +55,9 @@ int main()
    cout << "is stable? " << iso.getProperties().isStable() << endl;
    iso.print();
    iso.setIsotope("18B");
+   cout << "is stable? " << iso.getProperties().isStable() << endl;
+   iso.print();
+   iso.setIsotope("18Bul");
    cout << "is stable? " << iso.getProperties().isStable() << endl;
    iso.print();
 

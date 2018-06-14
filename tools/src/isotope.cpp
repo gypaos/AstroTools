@@ -5,9 +5,8 @@
  * Last update    :                                                          *  
  *---------------------------------------------------------------------------*  
  * Decription:                                                               *  
- *     The Isotope class defines a "star" by its metlallicity, initial          *
- *     rotational velocity and a table of yields (Yield class) for each      *
- *     isotope/element                                                       *
+ *     The Isotope class holds information concerning abundances and nuclear *  
+ *     properties                                                            *  
  *---------------------------------------------------------------------------*  
  * Comment:                                                                  *  
  *                                                                           *  
@@ -29,7 +28,7 @@
 Isotope::Isotope()
    : m_fileNameAbundances("Lodders09.txt"),
      m_fileNameProperties("nubase2016.txt"),
-     m_isotopeAbundanceTable(),
+     m_isotopeAbundancesTable(),
      m_isotopePropertiesTable(),
      m_properties(),
      m_abundances()
@@ -47,7 +46,7 @@ Isotope::Isotope(const std::string& fileNameAbundances,
                  const std::string& fileNameProperties)
    : m_fileNameAbundances(fileNameAbundances),
      m_fileNameProperties(fileNameProperties),
-     m_isotopeAbundanceTable(),
+     m_isotopeAbundancesTable(),
      m_isotopePropertiesTable(),
      m_properties(),
      m_abundances()
@@ -58,6 +57,13 @@ Isotope::Isotope(const std::string& fileNameAbundances,
    // read abundances and nuclear properties files
    readAbundanceFile();
    readPropertiesFile();
+}
+
+
+
+Isotope::~Isotope()
+{
+   clear();
 }
 
 
@@ -105,6 +111,51 @@ void Isotope::readAbundanceFile_AG89()
 
 void Isotope::readAbundanceFile_Lodders09()
 {
+   // variables
+   std::string line;
+   Abundances abundances; 
+
+   // open file
+   std::ifstream inputFile(m_fileNameAbundances.c_str());
+   if (inputFile) {
+      // skip first 6 lines
+      unsigned int nCommentLines = 6;
+      for (unsigned int i = 0; i < nCommentLines; i++) getline(inputFile, line);
+      while (getline(inputFile, line)) {
+         // skip empty lines
+         if (line.empty()) continue;
+         // skip element lines
+         if (line.compare(0,1," ") == 0) continue;
+         // get atomic charge & mass number
+         unsigned int atomicCharge = atoi(line.substr(0,2).c_str());
+         unsigned int massNumber   = atoi(line.substr(7,3).c_str());
+         // build isotope name
+         std::string elementName = line.substr(3,4);
+         elementName.erase(std::remove_if(elementName.begin(), elementName.end(), ::isspace), elementName.end());
+         std::stringstream sstm;
+         sstm << massNumber << elementName;
+         std::string isotopeName = sstm.str();
+         // get number of atoms
+         double numberOfAtoms = atof(line.substr(21,line.length()-21).c_str());
+         // fill NucleusProperties object
+         abundances.setName(isotopeName);
+         abundances.setAtomicCharge(atomicCharge);
+         abundances.setMassNumber(massNumber);
+         abundances.setNumberOfAtoms(numberOfAtoms);
+         // populate map
+         m_isotopeAbundancesTable[isotopeName] = abundances;
+         m_isotopeAbundancesTable[isotopeName].print();
+         // clear Abundances object
+         abundances.clear();
+      }
+   }
+   else {
+      std::cout << "Problem opening isotopic abundance file " << m_fileNameAbundances << std::endl;
+      exit(1);
+   }
+
+   // close file
+   inputFile.close();
 }
 
 
@@ -156,7 +207,6 @@ void Isotope::readPropertiesFile()
          nucleusProperties.setSpinParity(spinParity);
          // populate map
          m_isotopePropertiesTable[isotopeName] = nucleusProperties;
-         //m_isotopePropertiesTable[isotopeName].print();
          // clear NucleusProperties object
          nucleusProperties.clear();
       }
@@ -172,16 +222,32 @@ void Isotope::readPropertiesFile()
 
 
 
-Isotope::~Isotope()
+void Isotope::setIsotope(const std::string& isotope)
 {
-   clear();
+   //  
+   if (m_isotopePropertiesTable.find(isotope) != m_isotopePropertiesTable.end()) {
+      m_properties = m_isotopePropertiesTable[isotope];
+   }
+   else {
+      std::cout << isotope << " is not registered in m_isotopePropertiesTable" << std::endl;
+      m_properties.clear();
+   }
+
+   // 
+   if (m_isotopeAbundancesTable.find(isotope) != m_isotopeAbundancesTable.end()) {
+      m_abundances = m_isotopeAbundancesTable[isotope];
+   }
+   else {
+      std::cout << isotope << " is not registered in m_isotopeAbundancesTable" << std::endl;
+      m_abundances.clear();
+   }
 }
 
 
 
 void Isotope::clear()
 {
-   m_isotopeAbundanceTable.clear();
+   m_isotopeAbundancesTable.clear();
    m_isotopePropertiesTable.clear();
 }
 
@@ -195,7 +261,7 @@ void Isotope::print() const
    std::cout << " + Nuclear properties file: " << m_fileNameProperties << std::endl;
    std::cout << " + Abundances file: " << m_fileNameAbundances << std::endl;
    std::cout << " + Number of isotopes having nuclear properties: " << m_isotopePropertiesTable.size() << std::endl;
-   std::cout << " + Number of isotopes having abundances: " << m_isotopeAbundanceTable.size() << std::endl;
+   std::cout << " + Number of isotopes having abundances: " << m_isotopeAbundancesTable.size() << std::endl;
 
    if (m_properties.getName() != "unknown") m_properties.print();
    if (m_abundances.getName() != "unknown") m_abundances.print();
