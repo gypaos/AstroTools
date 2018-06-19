@@ -73,7 +73,7 @@ class NucleusProperties
       double         m_massExcess;
       double         m_massExcessUncertainty;
       bool           m_massExcessExperimental;
-      std::string    m_halfLifeString;
+      std::string    m_halfLifeString;          // should be half-life, units and uncertainty
       double         m_halfLife;                // in s
       double         m_halfLifeUncertainty;     // in s
       std::string    m_halfLifeUpperLower;      // upper/lower limit

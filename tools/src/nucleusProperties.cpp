@@ -132,6 +132,8 @@ std::string NucleusProperties::getNameLatex() const
 
 
 // m_halfLifeString is parsed to get half life and half life uncertainties in s
+// m_halfLifeString format should be half life (double), time unit (string)
+// and half life uncertainty (double)
 void NucleusProperties::parseHalfLife()
 {
    // define variables
