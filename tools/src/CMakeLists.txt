@@ -7,3 +7,6 @@ add_library(StellarYield SHARED yield.cpp star.cpp stellarYield.cpp)
 
 # build libStellarYield shared library
 add_library(Isotope SHARED isotope.cpp abundances.cpp nucleusProperties.cpp)
+
+# build libStarClusterMC shared library
+add_library(StarClusterMC SHARED starClusterMC.cpp)
