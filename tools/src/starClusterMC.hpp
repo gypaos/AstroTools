@@ -16,6 +16,13 @@
  *                                                                           *  
  *****************************************************************************/ 
  
+// ROOT headers
+#include "TCanvas.h"
+#include "TH1.h"
+#include "TH2.h"
+#include "THStack.h"
+#include "TSpline.h"
+
 // STL header
 #include <string>
 #include <vector>
@@ -41,6 +48,16 @@ class StarClusterMC
 
    public:
       // setters
+      void setCluster(int numberOfStarsInCluster, double ageCluster) {
+         m_numberOfStarsInCluster.push_back(numberOfStarsInCluster);
+         m_ageCluster.push_back(ageCluster);
+         m_numberOfClusters = m_numberOfStarsInCluster.size();
+      };
+      void setInitialVelocity(double velocity, double fraction) {
+         m_initialVelocity.push_back(velocity);
+         m_initialVelocityFraction.push_back(fraction);
+         m_numberOfVelocities = m_initialVelocity.size();
+      };
       // getters
 
    private:
@@ -56,12 +73,23 @@ class StarClusterMC
       double                              m_massMaxCCSN;                // in M_sun
       double                              m_metallicity;                // star metallicity in Z_sun
       std::vector<double>                 m_initialVelocity; // star initial velocity
+      std::vector<double>                 m_initialVelocityFraction;
+      unsigned int                        m_numberOfVelocities;
+      TSpline3                            m_lifeTime;
       std::vector<std::string>            m_isotope;    // list of isotopes
       std::vector<std::pair<int, int> >   m_isotopicRatio;
       std::vector<std::pair<int, int> >   m_isotopicRatioCorrelation;
       unsigned int                        m_numberOfIsotopes;
       unsigned int                        m_numberOfIsotopicRatios;
       unsigned int                        m_numberOfIsotopicRatioCorrelations;
+
+   private:
+      TCanvas*             m_can0;
+      THStack*             m_hcontrol0;
+      THStack*             m_hcontrol1;
+      TH1F*                m_hcontrol2;
+      TH1F*                m_hcontrol3;
+      TH2F*                m_hcontrol4;
 };
 
 #endif

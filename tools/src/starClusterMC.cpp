@@ -18,10 +18,14 @@
 #include "starClusterMC.hpp"
 
 // ROOT headers
+#include "TROOT.h"
 #include "TRandom3.h"
+#include "TString.h"
+#include "TGraph.h"
 
 // C++ headers
 #include <iostream>
+#include <fstream>
 
 
 StarClusterMC::StarClusterMC()
@@ -37,13 +41,22 @@ StarClusterMC::StarClusterMC()
      m_massMaxCCSN(25),
      m_metallicity(1),
      m_initialVelocity(),
+     m_initialVelocityFraction(),
+     m_numberOfVelocities(m_initialVelocity.size()),
      m_isotope(),
      m_isotopicRatio(),
      m_isotopicRatioCorrelation(),
      m_numberOfIsotopes(m_isotope.size()),
      m_numberOfIsotopicRatios(m_isotopicRatio.size()),
-     m_numberOfIsotopicRatioCorrelations(m_isotopicRatioCorrelation.size())
+     m_numberOfIsotopicRatioCorrelations(m_isotopicRatioCorrelation.size()),
+     m_can0(),
+     m_hcontrol0(new THStack),
+     m_hcontrol1(new THStack),
+     m_hcontrol2(),
+     m_hcontrol3(),
+     m_hcontrol4()
 {
+   readLifeTimeSchaller();
 }
 
 
@@ -62,6 +75,21 @@ StarClusterMC::~StarClusterMC()
 
 void StarClusterMC::displayCanvasControl()
 {
+   // number of massive stars distribution                                      
+   m_can0->cd(1); 
+   for (Int_t i = 0; i < m_numberOfClusters; ++i) {                                  
+      m_hcontrol0->Draw("nostack");                                                     
+   }                                                                            
+   m_can0->cd(2);                                                                 
+   for (Int_t i = 0; i < m_numberOfClusters; ++i) {                                  
+      m_hcontrol1->Draw("nostack");                                                     
+   }                                                                            
+   // imf                                                                       
+   m_can0->cd(3); m_hcontrol2->DrawCopy(); delete m_hcontrol2;                                              
+   // initial rotational velocity distribution                                  
+   m_can0->cd(4); m_hcontrol3->DrawCopy(); delete m_hcontrol3;                                              
+   // lifetime                                                                  
+   m_can0->cd(5); m_hcontrol4->DrawCopy(); delete m_hcontrol4; 
 }
 
 
@@ -79,6 +107,25 @@ double StarClusterMC::kroupaGeneratingFunction(double random)
 
 void StarClusterMC::prepareCanvasControl()
 {
+   m_can0 = (TCanvas*) gROOT->GetListOfCanvases()->FindObject("can0");   
+   if (m_can0) m_can0->Clear();                                                     
+   else m_can0 = new TCanvas("can0", "MC control histograms", 1080, 720);         
+   m_can0->Divide(3, 2);                                                          
+   m_can0->Draw();                                                                
+   TH1F *hcontrol0_tmp, *hcontrol1_tmp;
+   m_hcontrol2 = new TH1F("hcontrol2", Form("initial mass function for t < %2.0f Myr", m_timeRange), 100, 0, 120);
+   m_hcontrol3 = new TH1F("hcontrol3", "initial rotational velocity distribution", 3, 0, 450);
+   m_hcontrol4 = new TH2F("hcontrol4", "lifetime", 1000, 0, 120, 1000, 0, 40);
+   for (int i = 0; i < m_numberOfClusters; ++i) {                                  
+      hcontrol0_tmp = new TH1F(Form("hcontrol0_%d",i), Form("SN numbers in [%d, %d] Msun", (int)m_massMin, (int)m_massMax), 50, 0, 50);
+      hcontrol0_tmp->SetLineColor(i+1);
+      m_hcontrol0->Add(hcontrol0_tmp);
+      hcontrol1_tmp = new TH1F(Form("hcontrol1_%d",i), Form("SN numbers for t < %2.0f Myr", m_timeRange), 50, 0, 50);
+      hcontrol1_tmp->SetLineColor(i+1);
+      m_hcontrol1->Add(hcontrol1_tmp);
+   }
+   m_hcontrol0->SetTitle(Form("SN numbers in [%d, %d] Msun", (int)m_massMin, (int)m_massMax));
+   m_hcontrol1->SetTitle(Form("SN numbers for t < %2.0f Myr", m_timeRange));
 }
 
 
@@ -89,39 +136,105 @@ void StarClusterMC::readInputFile(const std::string& inputFile)
 
 
 
+void StarClusterMC::readLifeTimeSchaller()
+{
+   std::string lifeTimeFile;
+   // check and get ASTROTOOLS env. variable 
+   char const* tmp = getenv("ASTROTOOLS");
+   if (tmp == NULL) {
+      std::cout << "ASTROTOOLS environment variable not defined" << std::endl;
+      exit(1);
+   } else {
+      lifeTimeFile = tmp;
+   }
+   lifeTimeFile += "/data/models/lifeTime/Schaller92.dat";
+
+   // opening the data file                                                     
+   std::string line;         
+   int index = 0;
+   TGraph *gr = new TGraph();                                             
+   std::ifstream inputFile(lifeTimeFile.c_str());
+   if (inputFile) {
+      while (getline(inputFile, line)) {
+         // skip empty line
+         if (line.empty()) continue;
+         // skip comment line
+         if (line.compare(0,2,"//") == 0) continue;
+         double mass    = atof(line.substr(0,5).c_str());
+         double timeH   = atof(line.substr(6,10).c_str());
+         double timeHe  = atof(line.substr(18,8).c_str());
+         double timeC   = atof(line.substr(27,8).c_str());
+         gr->SetPoint(index++, mass, timeH + timeHe + timeC);                            
+      }
+   }
+   else {
+      std::cout << "Problem opening stellar life time file " << inputFile << std::endl;
+      exit(1);
+   }
+
+   // close file
+   inputFile.close();
+
+   // build a spline                                                            
+   m_lifeTime = TSpline3("sp", gr);                                        
+   delete gr;
+}
+
+
+
 void StarClusterMC::run(int numberMCEvents)
 {
+   // build cumulative velocity distribution
+   std::vector<double> cumulativeVelocityDistribution;
+   cumulativeVelocityDistribution.push_back(m_initialVelocityFraction[0]);
+   for (unsigned int i = 0; i < m_numberOfVelocities-1; ++i) {
+      cumulativeVelocityDistribution.push_back(cumulativeVelocityDistribution[i] + m_initialVelocityFraction[i+1]);
+   }
+
+   // array for storing number of massive stars
+   int nbMassiveStars[m_numberOfClusters];
+   int nbMassiveStarsTimeRange[m_numberOfClusters];
    // random number initialization
    TRandom3 rndmMass, rndmVelocity;
 
    for (int iEvt = 0; iEvt < numberMCEvents; iEvt++) {                                        
-      std::vector<double> Mass, ExplosionTime, LifeTime;                           
+      std::vector<double> stellarMass, stellarLifeTime, explosionTime;                           
       for (int iNumberCluster = 0; iNumberCluster < m_numberOfClusters; iNumberCluster++) {    // loop on number of "clusters"
-//         nbsncluster[j] = 0;                                                    
-//         nbsnclusterTimeRange[j] = 0;                                           
+         // initialize arrays
+         nbMassiveStars[iNumberCluster] = 0;
+         nbMassiveStarsTimeRange[iNumberCluster] = 0;
          for (int iClusterSize = 0; iClusterSize < m_numberOfStarsInCluster[iNumberCluster]; iClusterSize++) {    // loop on number of stars in clusters
             // generate random number                                           
             double xi = rndmMass.Rndm();                                         
             // use the Kroupa's modified IMF                                    
             double mass = kroupaGeneratingFunction(xi);                       
             // calculate lifetime                                               
-//            double death = lifetime->Eval(mass);                              
-//            hcontrol4->Fill(mass, death);                                       
+            double death = m_lifeTime.Eval(mass);                              
+            m_hcontrol4->Fill(mass, death);                                       
             // select only stars with 8 Mo < M < 120 Mo                         
             if (mass < m_massMin || mass > m_massMax) continue;                   
-//            nbsncluster[j]++;                                                   
+            nbMassiveStars[iNumberCluster]++;                                                   
             // select only stars with lifetime < TIME_RANGE                     
-//            if (death > TIME_RANGE) continue;                                   
-//            nbsnclusterTimeRange[j]++;                                          
-            Mass.push_back(mass);                                               
-//            hcontrol2->Fill(mass);                                              
-//            LifeTime.push_back(death);                                       
-//            ExplosionTime.push_back(death + AGE_CLUSTER[0]-AGE_CLUSTER[j]);  
+            if (death > m_timeRange) continue;                                   
+            nbMassiveStarsTimeRange[iNumberCluster]++;                                                   
+            stellarMass.push_back(mass);                                               
+            m_hcontrol2->Fill(mass);                                              
+            stellarLifeTime.push_back(death);                                       
+            explosionTime.push_back(death + m_ageCluster[0]-m_ageCluster[iNumberCluster]);  
+            // determine initial rotational velocity
+            double vi = rndmVelocity.Rndm();
+            for (unsigned int r = 0; r < m_numberOfVelocities; ++r) {
+               if (vi < cumulativeVelocityDistribution[r]) {
+                  m_hcontrol3->Fill(m_initialVelocity[r]);
+                  break;
+               }
+            }
          } // end of loop on number of stars in cluster                         
-//         hcontrol0[j]->Fill(nbsncluster[j]);                                    
-//         hcontrol1[j]->Fill(nbsnclusterTimeRange[j]);                           
+         ((TH1F*)m_hcontrol0->GetHists()->FindObject(Form("hcontrol0_%d",iNumberCluster)))->Fill(nbMassiveStars[iNumberCluster]); 
+         ((TH1F*)m_hcontrol1->GetHists()->FindObject(Form("hcontrol1_%d",iNumberCluster)))->Fill(nbMassiveStarsTimeRange[iNumberCluster]); 
       } // end of loop on number of "clusters"                                  
    }
+
 }
 
 
