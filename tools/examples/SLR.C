@@ -15,6 +15,9 @@ void SLR(int numberOfStars = 5000, int numberOfRealization = 100)
    simu.addInitialVelocity(150, 0.32);
    simu.addInitialVelocity(300, 0.01);
 
+   // defines isotopes
+   simu.addIsotope("27Al", 1e-8, 1e-3);
+
    // prepare canvas
    simu.prepareCanvasControl();
 

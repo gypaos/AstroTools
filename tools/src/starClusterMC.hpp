@@ -16,6 +16,9 @@
  *                                                                           *  
  *****************************************************************************/ 
  
+// project headers
+#include "isotope.hpp"
+
 // ROOT headers
 #include "TCanvas.h"
 #include "TH1.h"
@@ -39,6 +42,7 @@ class StarClusterMC
       // methods
       void     addCluster(int, double);
       void     addInitialVelocity(double, double); 
+      void     addIsotope(std::string, double, double);
       void     displayCanvasControl() const;
       double   kroupaGeneratingFunction(double) const;
       void     prepareCanvasControl();
@@ -68,7 +72,9 @@ class StarClusterMC
       std::vector<double>                 m_initialVelocityFraction;
       unsigned int                        m_numberOfVelocities;
       TSpline3                            m_lifeTime;
-      std::vector<std::string>            m_isotope;    // list of isotopes
+      std::vector<Isotope>                m_isotopeList;    // list of isotopes
+      std::vector<double>                 m_isotopeRmin;
+      std::vector<double>                 m_isotopeRmax;
       std::vector<std::pair<int, int> >   m_isotopicRatio;
       std::vector<std::pair<int, int> >   m_isotopicRatioCorrelation;
       unsigned int                        m_numberOfIsotopes;

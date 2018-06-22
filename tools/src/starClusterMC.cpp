@@ -16,7 +16,7 @@
  
 // project header
 #include "starClusterMC.hpp"
-#include <star.hpp>
+#include "star.hpp"
 
 // ROOT headers
 #include "TROOT.h"
@@ -44,10 +44,13 @@ StarClusterMC::StarClusterMC()
      m_initialVelocity(),
      m_initialVelocityFraction(),
      m_numberOfVelocities(m_initialVelocity.size()),
-     m_isotope(),
+     m_lifeTime(),
+     m_isotopeList(),
+     m_isotopeRmin(),
+     m_isotopeRmax(),
      m_isotopicRatio(),
      m_isotopicRatioCorrelation(),
-     m_numberOfIsotopes(m_isotope.size()),
+     m_numberOfIsotopes(m_isotopeList.size()),
      m_numberOfIsotopicRatios(m_isotopicRatio.size()),
      m_numberOfIsotopicRatioCorrelations(m_isotopicRatioCorrelation.size()),
      m_can0(0),
@@ -74,7 +77,8 @@ StarClusterMC::~StarClusterMC()
 
 
 
-void StarClusterMC::addCluster(int numberOfStarsInCluster, double ageCluster) {
+void StarClusterMC::addCluster(int numberOfStarsInCluster, double ageCluster) 
+{
    m_numberOfStarsInCluster.push_back(numberOfStarsInCluster);            
    m_ageCluster.push_back(ageCluster);                                    
    m_numberOfClusters = m_numberOfStarsInCluster.size();                  
@@ -82,10 +86,21 @@ void StarClusterMC::addCluster(int numberOfStarsInCluster, double ageCluster) {
 
 
 
-void StarClusterMC::addInitialVelocity(double velocity, double fraction) {
+void StarClusterMC::addInitialVelocity(double velocity, double fraction) 
+{
    m_initialVelocity.push_back(velocity);                                 
    m_initialVelocityFraction.push_back(fraction);                         
    m_numberOfVelocities = m_initialVelocity.size();                       
+}
+
+
+
+void StarClusterMC::addIsotope(std::string isotope, double rmin, double rmax) 
+{
+   Isotope iso; iso.setIsotope(isotope);
+   m_isotopeList.push_back(iso);
+   m_isotopeRmin.push_back(rmin);
+   m_isotopeRmax.push_back(rmax);
 }
 
 
@@ -253,8 +268,8 @@ void StarClusterMC::run(int numberMCEvents)
             }
             if (star.getInitialVelocity() < 0) std::cout << "Negative velocity" << std::endl;
          } // end of loop on number of stars in cluster                         
-         ((TH1F*)m_hcontrol0->GetHists()->FindObject(Form("hcontrol0_%d",iNumberCluster)))->Fill(nbMassiveStars[iNumberCluster]); 
-         ((TH1F*)m_hcontrol1->GetHists()->FindObject(Form("hcontrol1_%d",iNumberCluster)))->Fill(nbMassiveStarsTimeRange[iNumberCluster]); 
+         ((TH1F*)m_hcontrol0->GetHists()->At(iNumberCluster))->Fill(nbMassiveStars[iNumberCluster]); 
+         ((TH1F*)m_hcontrol1->GetHists()->At(iNumberCluster))->Fill(nbMassiveStarsTimeRange[iNumberCluster]); 
       } // end of loop on number of "clusters"                                  
    }
 

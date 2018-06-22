@@ -17,8 +17,6 @@
 
 // C++ headers
 #include <iostream>
-#include <sstream>
-#include <algorithm>
 
 
 Abundances::Abundances()

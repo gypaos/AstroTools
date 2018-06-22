@@ -1,6 +1,7 @@
 // project headers
 #include "nucleusProperties.hpp"
 #include "isotope.hpp"
+#include "abundances.hpp"
 
 // C++ headers
 #include <iostream>
@@ -9,6 +10,9 @@ using namespace std;
 
 int main()
 {
+   Abundances abun;
+   abun.print();
+
    ////////////////////////////////////////////////////////////////////////////
    // NucleusProperties class test
    cout << "********** test NucleusProperties class *****************************" << endl; 
