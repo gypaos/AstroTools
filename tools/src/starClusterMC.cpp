@@ -200,7 +200,7 @@ void StarClusterMC::readLifeTimeSchaller()
       }
    }
    else {
-      std::cout << "Problem opening stellar life time file " << inputFile << std::endl;
+      std::cout << "Problem opening stellar life time file " << lifeTimeFile << std::endl;
       exit(1);
    }
 

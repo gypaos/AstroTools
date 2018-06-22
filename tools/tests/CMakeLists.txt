@@ -1,6 +1,7 @@
 # ROOT stuff
 list(APPEND CMAKE_PREFIX_PATH $ENV{ROOTSYS})
 find_package(ROOT REQUIRED)
+include_directories(${ROOT_INCLUDE_DIRS})
 
 # add the executable
 add_executable(testStellarYield testStellarYield.cpp)
@@ -13,12 +14,6 @@ add_executable(testIsotope testIsotope.cpp)
 
 # link library rules
 target_link_libraries(testIsotope Isotope)
-
-# add the executable
-add_executable(testSLR testSLR.cpp)
-
-# link library rules
-target_link_libraries(testSLR StarClusterMC Isotope StellarYield ${ROOT_LIBRARIES})
 
 # install main
 #install(PROGRAMS testStellarYield DESTINATION ${CMAKE_BINARY_OUTPUT_DIRECTORY}) 
