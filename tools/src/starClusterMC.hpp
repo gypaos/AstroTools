@@ -37,8 +37,10 @@ class StarClusterMC
       virtual ~StarClusterMC();
 
       // methods
-      void     displayCanvasControl();
-      double   kroupaGeneratingFunction(double);
+      void     addCluster(int, double);
+      void     addInitialVelocity(double, double); 
+      void     displayCanvasControl() const;
+      double   kroupaGeneratingFunction(double) const;
       void     prepareCanvasControl();
       void     readInputFile(const std::string&);
       void     readLifeTimeSchaller();
@@ -48,16 +50,6 @@ class StarClusterMC
 
    public:
       // setters
-      void setCluster(int numberOfStarsInCluster, double ageCluster) {
-         m_numberOfStarsInCluster.push_back(numberOfStarsInCluster);
-         m_ageCluster.push_back(ageCluster);
-         m_numberOfClusters = m_numberOfStarsInCluster.size();
-      };
-      void setInitialVelocity(double velocity, double fraction) {
-         m_initialVelocity.push_back(velocity);
-         m_initialVelocityFraction.push_back(fraction);
-         m_numberOfVelocities = m_initialVelocity.size();
-      };
       // getters
 
    private:

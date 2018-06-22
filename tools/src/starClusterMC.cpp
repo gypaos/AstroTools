@@ -73,7 +73,23 @@ StarClusterMC::~StarClusterMC()
 
 
 
-void StarClusterMC::displayCanvasControl()
+void StarClusterMC::addCluster(int numberOfStarsInCluster, double ageCluster) {
+   m_numberOfStarsInCluster.push_back(numberOfStarsInCluster);            
+   m_ageCluster.push_back(ageCluster);                                    
+   m_numberOfClusters = m_numberOfStarsInCluster.size();                  
+}
+
+
+
+void StarClusterMC::addInitialVelocity(double velocity, double fraction) {
+   m_initialVelocity.push_back(velocity);                                 
+   m_initialVelocityFraction.push_back(fraction);                         
+   m_numberOfVelocities = m_initialVelocity.size();                       
+}
+
+
+
+void StarClusterMC::displayCanvasControl() const
 {
    // number of massive stars distribution                                      
    m_can0->cd(1); 
@@ -94,7 +110,7 @@ void StarClusterMC::displayCanvasControl()
 
 
 
-double StarClusterMC::kroupaGeneratingFunction(double random)
+double StarClusterMC::kroupaGeneratingFunction(double random) const
 {
    // 0.01 comes from Gounelle et al. APJL 694 L1 (2009)                        
    //   return 0.01 + (0.19*pow(xi, 1.55) + 0.05*pow(xi, 0.6)) / pow(1-xi, 0.58);  
