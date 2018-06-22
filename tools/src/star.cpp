@@ -79,12 +79,12 @@ void Star::clear()
 
 void Star::print() const
 {
-   std::cout << std::endl;
-   std::cout << "/////////////// Star::Print() ///////////////" << std::endl;
-   std::cout << "Star information" << std::endl;
-   std::cout << " + Metallicity: "     << m_Metallicity << std::endl;
-   std::cout << " + InitialVelocity: " << m_InitialVelocity << std::endl;
-   std::cout << " + Number of isotopes/elements: " << m_YieldTable.size() << std::endl;
+   std::cout << '\n';
+   std::cout << "/////////////// Star::Print() ///////////////" << '\n';
+   std::cout << "Star information" << '\n';
+   std::cout << " + Metallicity: "     << m_Metallicity << '\n';
+   std::cout << " + InitialVelocity: " << m_InitialVelocity << '\n';
+   std::cout << " + Number of isotopes/elements: " << m_YieldTable.size() << '\n';
    std::cout << " + List of isotopes/elements: ";
    std::map<std::string, Yield>::iterator it; // = m_YieldTable.begin();
    //it = m_YieldTable.begin();
@@ -92,5 +92,5 @@ void Star::print() const
       std::cout << it->first << "  ";
       ++it;
    }*/
-   std::cout << std::endl;
+   std::cout << '\n';
 }

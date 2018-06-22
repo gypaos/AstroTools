@@ -78,7 +78,7 @@ void Isotope::constructFileNames()
    // check and get ASTROTOOLS env. variable 
    char const* tmp = getenv("ASTROTOOLS");                                      
    if (tmp == NULL) {                                                           
-      std::cout << "ASTROTOOLS environment variable not defined" << std::endl;  
+      std::cout << "ASTROTOOLS environment variable not defined" << '\n';  
       exit(1);                                                                  
    } else {                                                                     
       m_fileNameProperties.insert(0, tmp);
@@ -97,7 +97,7 @@ void Isotope::readAbundanceFile()
       readAbundanceFile_AG89();
    }
    else {
-      std::cout << "Abundances file " << m_fileNameAbundances << " not yet supported" << std::endl;
+      std::cout << "Abundances file " << m_fileNameAbundances << " not yet supported" << '\n';
    }
 }
 
@@ -176,7 +176,7 @@ void Isotope::readAbundanceFile_Lodders09()
       }
    }
    else {
-      std::cout << "Problem opening isotopic abundance file " << m_fileNameAbundances << std::endl;
+      std::cout << "Problem opening isotopic abundance file " << m_fileNameAbundances << '\n';
       exit(1);
    }
 
@@ -238,7 +238,7 @@ void Isotope::readPropertiesFile()
       }
    }
    else {
-      std::cout << "Problem opening isotope nuclear properties file " << m_fileNameProperties << std::endl;
+      std::cout << "Problem opening isotope nuclear properties file " << m_fileNameProperties << '\n';
       exit(1);
    }
 
@@ -255,7 +255,7 @@ void Isotope::setIsotope(const std::string& isotope)
       m_properties = m_isotopePropertiesTable[isotope];
    }
    else {
-      std::cout << isotope << " is not registered in m_isotopePropertiesTable" << std::endl;
+      std::cout << isotope << " is not registered in m_isotopePropertiesTable" << '\n';
       m_properties.clear();
    }
 
@@ -264,7 +264,7 @@ void Isotope::setIsotope(const std::string& isotope)
       m_abundances = m_isotopeAbundancesTable[isotope];
    }
    else {
-      std::cout << isotope << " is not registered in m_isotopeAbundancesTable" << std::endl;
+      std::cout << isotope << " is not registered in m_isotopeAbundancesTable" << '\n';
       m_abundances.clear();
    }
 }
@@ -281,13 +281,13 @@ void Isotope::clear()
 
 void Isotope::print() const
 {
-   std::cout << std::endl;
-   std::cout << "/////////////// Isotope::Print() ///////////////" << std::endl;
-   std::cout << "Isotope tables information" << std::endl;
-   std::cout << " + Nuclear properties file: " << m_fileNameProperties << std::endl;
-   std::cout << " + Abundances file: " << m_fileNameAbundances << std::endl;
-   std::cout << " + Number of isotopes having nuclear properties: " << m_isotopePropertiesTable.size() << std::endl;
-   std::cout << " + Number of isotopes having abundances: " << m_isotopeAbundancesTable.size() << std::endl;
+   std::cout << '\n';
+   std::cout << "/////////////// Isotope::Print() ///////////////" << '\n';
+   std::cout << "Isotope tables information" << '\n';
+   std::cout << " + Nuclear properties file: " << m_fileNameProperties << '\n';
+   std::cout << " + Abundances file: " << m_fileNameAbundances << '\n';
+   std::cout << " + Number of isotopes having nuclear properties: " << m_isotopePropertiesTable.size() << '\n';
+   std::cout << " + Number of isotopes having abundances: " << m_isotopeAbundancesTable.size() << '\n';
 
    if (m_properties.getName() != "unknown") m_properties.print();
    if (m_abundances.getName() != "unknown") m_abundances.print();

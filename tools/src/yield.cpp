@@ -42,9 +42,9 @@ Yield::Yield(std::vector<double> mass, std::vector<double> yield)
 {
    // check if vectors have same size
    if (m_stellarMass.size() != m_yield.size()) {
-      std::cout << "Yield: mass and yield don't have same size" << std::endl;
-      std::cout << " mass  -> size = " << m_stellarMass.size() << std::endl;
-      std::cout << " yield -> size = " << m_yield.size() << std::endl;
+      std::cout << "Yield: mass and yield don't have same size" << '\n';
+      std::cout << " mass  -> size = " << m_stellarMass.size() << '\n';
+      std::cout << " yield -> size = " << m_yield.size() << '\n';
    }
 
    // find min/max mass
@@ -56,9 +56,9 @@ Yield::Yield(std::vector<double> mass, std::vector<double> yield)
 
 Yield::~Yield()
 {
-//   std::cout << "Yield::~Yield avant " << m_grYield << std::endl;
-//   if (m_grYield) {delete m_grYield; std::cout << "deleting tgraph" << std::endl;}
-//   std::cout << "Yield::~Yield apres " << m_grYield << std::endl;
+//   std::cout << "Yield::~Yield avant " << m_grYield << '\n';
+//   if (m_grYield) {delete m_grYield; std::cout << "deleting tgraph" << '\n';}
+//   std::cout << "Yield::~Yield apres " << m_grYield << '\n';
 }
 
 
@@ -72,7 +72,7 @@ double Yield::eval(double mass) const
 {
    unsigned int size = m_stellarMass.size();
    if (size < 3) {
-      std::cout << "Yield::Eval(): more than two masses needed for interpolation" << std::endl;  
+      std::cout << "Yield::Eval(): more than two masses needed for interpolation" << '\n';  
    }
 
    // interpolation is in log(y) v.s. log(m)
@@ -132,7 +132,7 @@ double Yield::integrateIMF(double slope, bool normalizedToMeanMass) const
    double massStep = 0.1;    // solar mass
    // for some reasons, casting to int rest one unit in nbSteps!!!!
    double nbSteps  = (massHighEdge - massLowEdge) / massStep;
-//   std::cout << "nbsteps = " << massHighEdge << "\t" << massLowEdge << "\t" << nbSteps << std::endl;
+//   std::cout << "nbsteps = " << massHighEdge << "\t" << massLowEdge << "\t" << nbSteps << '\n';
 
    // integrate over IMF (m^-slope)
    double integral = 0;
@@ -143,14 +143,14 @@ double Yield::integrateIMF(double slope, bool normalizedToMeanMass) const
       double yieldHigh = eval(massHigh);
       integral += (yieldLow  * pow(massLow, -slope) + 
                    yieldHigh * pow(massHigh, -slope));
-//      std::cout << i << "\t" << massLow << "\t" << massHigh << "\t" << yieldLow << "\t" << yieldHigh << "\t" << integral << std::endl;
+//      std::cout << i << "\t" << massLow << "\t" << massHigh << "\t" << yieldLow << "\t" << yieldHigh << "\t" << integral << '\n';
    } // end loop on masses
    integral *= 0.5 * massStep;
 
    // normalized IMF over [m_minMass; m_maxMass]
    double norm = (1-slope) / (pow(massHighEdge, 1-slope) - pow(massLowEdge, 1-slope));
    integral *= norm;
-//   std::cout << norm << std::endl;
+//   std::cout << norm << '\n';
 
    double meanMass = 1;
    if (normalizedToMeanMass) {
@@ -194,21 +194,21 @@ TGraph* Yield::getGraph()
 
 void Yield::print() const
 {
-   std::cout << std::endl;
-   std::cout << "/////////////// Yield::print() ///////////////" << std::endl;
-   std::cout << "Yield information" << std::endl;
+   std::cout << '\n';
+   std::cout << "/////////////// Yield::print() ///////////////" << '\n';
+   std::cout << "Yield information" << '\n';
    std::cout << " + Mass = ";
    for (unsigned int i = 0; i < m_stellarMass.size(); ++i) {   // loop on stellar masses
       double mass  = m_stellarMass[i];
       if (m_isLog10) mass  = pow(10, mass);
       std::cout << mass << "\t";
    } // end loop on stellar masses
-   std::cout << std::endl;
+   std::cout << '\n';
    std::cout << " + Yield = ";
    for (unsigned int i = 0; i < m_yield.size(); ++i) {   // loop on yields
       double yield =  m_yield[i];
       if (m_isLog10) yield  = pow(10, yield);
       std::cout << yield << "\t";
    } // end loop on yields
-   std::cout << std::endl;
+   std::cout << '\n';
 }

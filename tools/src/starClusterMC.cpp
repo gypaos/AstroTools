@@ -174,7 +174,7 @@ void StarClusterMC::readLifeTimeSchaller()
    // check and get ASTROTOOLS env. variable 
    char const* tmp = getenv("ASTROTOOLS");
    if (tmp == NULL) {
-      std::cout << "ASTROTOOLS environment variable not defined" << std::endl;
+      std::cout << "ASTROTOOLS environment variable not defined" << '\n';
       exit(1);
    } else {
       lifeTimeFile = tmp;
@@ -200,7 +200,7 @@ void StarClusterMC::readLifeTimeSchaller()
       }
    }
    else {
-      std::cout << "Problem opening stellar life time file " << lifeTimeFile << std::endl;
+      std::cout << "Problem opening stellar life time file " << lifeTimeFile << '\n';
       exit(1);
    }
 
@@ -266,7 +266,7 @@ void StarClusterMC::run(int numberMCEvents)
                   break;
                }
             }
-            if (star.getInitialVelocity() < 0) std::cout << "Negative velocity" << std::endl;
+            if (star.getInitialVelocity() < 0) std::cout << "Negative velocity" << '\n';
          } // end of loop on number of stars in cluster                         
          ((TH1F*)m_hcontrol0->GetHists()->At(iNumberCluster))->Fill(nbMassiveStars[iNumberCluster]); 
          ((TH1F*)m_hcontrol1->GetHists()->At(iNumberCluster))->Fill(nbMassiveStarsTimeRange[iNumberCluster]); 
@@ -285,6 +285,6 @@ void StarClusterMC::clear()
 
 void StarClusterMC::print() const
 {
-   std::cout << std::endl;
-   std::cout << "/////////////// StarClusterMC::print() ///////////////" << std::endl;
+   std::cout << '\n';
+   std::cout << "/////////////// StarClusterMC::print() ///////////////" << '\n';
 }

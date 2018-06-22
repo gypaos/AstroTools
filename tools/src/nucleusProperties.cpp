@@ -252,11 +252,11 @@ void NucleusProperties::clear()
 
 void NucleusProperties::print() const
 {
-   std::cout << std::endl;
-   std::cout << "/////////////// NucleusProperties::print() ///////////////" << std::endl;
-   std::cout << "NucleusProperties information" << std::endl;
-   std::cout << " + Isotope: " << m_name << "\t(Z = " << m_atomicCharge << ", A = " << m_massNumber << ")\tJpi = " << m_spinParity << std::endl;
-   std::cout << " + Mass excess: " << m_massExcess << " +/- " << m_massExcessUncertainty << " keV" << std::endl;
-   std::cout << " + Half life: " << m_halfLifeString << "\t(" << m_halfLifeUpperLower << " " << m_halfLife << " +/- " << m_halfLifeUncertainty << " s)" << std::endl;
-   std::cout << " + Jpi: " << m_spinParity << std::endl;
+   std::cout << '\n';
+   std::cout << "/////////////// NucleusProperties::print() ///////////////" << '\n';
+   std::cout << "NucleusProperties information" << '\n';
+   std::cout << " + Isotope: " << m_name << "\t(Z = " << m_atomicCharge << ", A = " << m_massNumber << ")\tJpi = " << m_spinParity << '\n';
+   std::cout << " + Mass excess: " << m_massExcess << " +/- " << m_massExcessUncertainty << " keV" << '\n';
+   std::cout << " + Half life: " << m_halfLifeString << "\t(" << m_halfLifeUpperLower << " " << m_halfLife << " +/- " << m_halfLifeUncertainty << " s)" << '\n';
+   std::cout << " + Jpi: " << m_spinParity << '\n';
 }

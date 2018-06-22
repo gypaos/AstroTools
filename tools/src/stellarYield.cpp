@@ -46,7 +46,7 @@ StellarYield::StellarYield(const std::string& type, const std::string& file, con
    // check and get ASTROTOOLS env. variable
    char const* tmp = getenv("ASTROTOOLS");
    if (tmp == NULL) {
-      std::cout << "ASTROTOOLS environment variable not defined" << std::endl;
+      std::cout << "ASTROTOOLS environment variable not defined" << '\n';
       exit(1);
    } else {
       m_YieldFile = tmp;
@@ -76,7 +76,7 @@ StellarYield::StellarYield(const std::string& type, const std::string& file, con
       }
    }
    else {
-      std::cout << "Yield type not known" << std::endl;
+      std::cout << "Yield type not known" << '\n';
       exit(1);
    }
 
@@ -156,8 +156,8 @@ void StellarYield::readFile_LC17()
                      double mass = atof(item.substr(0,3).c_str());
                      if (m_isLog10) mass = log10(mass);
                      v_mass.push_back(mass);
-                     //std::cout << item << std::endl;
-                     //std::cout << atof(item.substr(0,3).c_str()) << std::endl;
+                     //std::cout << item << '\n';
+                     //std::cout << atof(item.substr(0,3).c_str()) << '\n';
                   }
                }
             }
@@ -206,11 +206,11 @@ void StellarYield::readFile_LC17()
          // declare Yield, feed Star and fill set if not header line
          if (!isHeader) {
             // declare Yield object
-            //std::cout << "LC17 before yield construction" << std::endl;
+            //std::cout << "LC17 before yield construction" << '\n';
             Yield yield(v_mass, v_yield);
             yield.setLog10(m_isLog10);
             // feed Star class
-            //std::cout << "LC17 before star getYield" << std::endl;
+            //std::cout << "LC17 before star getYield" << '\n';
             star.setYield(iso_ele, yield);
          }
          // clear yield vector
@@ -220,7 +220,7 @@ void StellarYield::readFile_LC17()
       m_StellarYieldSet.insert(star);
    } 
    else {
-      std::cout << "Problem opening yield file " << m_YieldFile << std::endl;
+      std::cout << "Problem opening yield file " << m_YieldFile << '\n';
       exit(1);
    }
 
@@ -296,7 +296,7 @@ void StellarYield::readFile_CL13()
       m_StellarYieldSet.insert(star);
    }
    else {
-      std::cout << "Problem opening yield file " << m_YieldFile << std::endl;
+      std::cout << "Problem opening yield file " << m_YieldFile << '\n';
       exit(1);
    }
 
@@ -315,17 +315,17 @@ void StellarYield::clear()
 
 void StellarYield::print() const
 {
-   std::cout << std::endl;
-   std::cout << "/////////////// StellarYield::print() ///////////////" << std::endl;
-   std::cout << "StellarYield information" << std::endl;
-   std::cout << " + Type: "   << m_YieldType   << std::endl;
-   std::cout << " + Option: " << m_YieldOption << std::endl;
-   std::cout << " + File: "   << m_YieldFile   << std::endl;
-   std::cout << std::endl;
-   std::cout << "Number of registered stars: " << m_StellarYieldSet.size() << std::endl;
-   std::cout << " [Fe/H]\tv (m/s)" << std::endl;
+   std::cout << '\n';
+   std::cout << "/////////////// StellarYield::print() ///////////////" << '\n';
+   std::cout << "StellarYield information" << '\n';
+   std::cout << " + Type: "   << m_YieldType   << '\n';
+   std::cout << " + Option: " << m_YieldOption << '\n';
+   std::cout << " + File: "   << m_YieldFile   << '\n';
+   std::cout << '\n';
+   std::cout << "Number of registered stars: " << m_StellarYieldSet.size() << '\n';
+   std::cout << " [Fe/H]\tv (m/s)" << '\n';
    std::set<Star>::iterator it;
    for (it=m_StellarYieldSet.begin(); it!=m_StellarYieldSet.end(); ++it) {   // loop on set
-      std::cout << "  " << (*it).getMetallicity() << "\t  " << (*it).getInitialVelocity() << std::endl;
+      std::cout << "  " << (*it).getMetallicity() << "\t  " << (*it).getInitialVelocity() << '\n';
    } // end loop on set
 }
