@@ -139,20 +139,31 @@ double StarClusterMC::kroupaGeneratingFunction(double random) const
 
 void StarClusterMC::prepareCanvasControl()
 {
+   // control canvas
    m_can0 = (TCanvas*) gROOT->GetListOfCanvases()->FindObject("can0");   
    if (m_can0) m_can0->Clear();                                                     
    else m_can0 = new TCanvas("can0", "MC control histograms", 1080, 720);         
    m_can0->Divide(3, 2);                                                          
-   m_can0->Draw();                                                                
-   TH1F *hcontrol0_tmp, *hcontrol1_tmp;
-   m_hcontrol2 = new TH1F("hcontrol2", Form("initial mass function for t < %2.0f Myr", m_timeRange), 100, 0, 120);
+   m_can0->Draw();
+
+   // single control histograms
+   m_hcontrol2 = new TH1F("hcontrol2", 
+			  Form("initial mass function for t < %2.0f Myr", m_timeRange), 
+			  100, 0, 120);
    m_hcontrol3 = new TH1F("hcontrol3", "initial rotational velocity distribution", 3, 0, 450);
    m_hcontrol4 = new TH2F("hcontrol4", "lifetime", 1000, 0, 120, 1000, 0, 40);
+
+   // control histograms for each cluster
+   TH1F *hcontrol0_tmp, *hcontrol1_tmp;
    for (int i = 0; i < m_numberOfClusters; ++i) {                                  
-      hcontrol0_tmp = new TH1F(Form("hcontrol0_%d",i), Form("SN numbers in [%d, %d] Msun", (int)m_massMin, (int)m_massMax), 50, 0, 50);
+      hcontrol0_tmp = new TH1F(Form("hcontrol0_%d",i), 
+			       Form("SN numbers in [%d, %d] Msun", 
+			       (int)m_massMin, (int)m_massMax), 50, 0, 50);
       hcontrol0_tmp->SetLineColor(i+1);
       m_hcontrol0->Add(hcontrol0_tmp);
-      hcontrol1_tmp = new TH1F(Form("hcontrol1_%d",i), Form("SN numbers for t < %2.0f Myr", m_timeRange), 50, 0, 50);
+      hcontrol1_tmp = new TH1F(Form("hcontrol1_%d",i), 
+			       Form("SN numbers for t < %2.0f Myr", m_timeRange), 
+			       50, 0, 50);
       hcontrol1_tmp->SetLineColor(i+1);
       m_hcontrol1->Add(hcontrol1_tmp);
    }
