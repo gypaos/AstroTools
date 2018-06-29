@@ -40,13 +40,14 @@ void LibsPersoAstroRootLogon(bool verbosemode = false)
 
    // Test if the lib directory is empty or not
    if (listfile->GetEntries() > 2) {
+      gSystem->Load(libpath+"/libIsotope.so");
    }
     
    // Loop on all libraries
    Int_t i = 0;
    while (listfile->At(i)) {
       TString libname = listfile->At(i++)->GetName();
-      if (libname.Contains(".so")) {
+      if (libname.Contains(".so") && !libname.Contains("libIsotope.so")) {
          TString lib     = libpath + "/" + libname;
          gSystem->Load(lib);
       }
