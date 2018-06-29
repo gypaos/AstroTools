@@ -86,11 +86,10 @@ void Star::print() const
    std::cout << " + InitialVelocity: " << m_InitialVelocity << '\n';
    std::cout << " + Number of isotopes/elements: " << m_YieldTable.size() << '\n';
    std::cout << " + List of isotopes/elements: ";
-   std::map<std::string, Yield>::iterator it; // = m_YieldTable.begin();
-   //it = m_YieldTable.begin();
-/*   while (it != m_YieldTable.end()) {
-      std::cout << it->first << "  ";
-      ++it;
-   }*/
-   std::cout << '\n';
+//   std::map<std::string, Yield>::iterator it = m_YieldTable.begin();
+//   while (it != m_YieldTable.end()) {
+//      std::cout << it->first << "  ";
+//      ++it;
+//   }
+//   std::cout << '\n';
 }

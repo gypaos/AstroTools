@@ -68,7 +68,7 @@ class Star
       // getters
       double getMetallicity() const               {return m_Metallicity;}
       double getInitialVelocity() const           {return m_InitialVelocity;}
-      Yield&  getYield(const std::string& isotope) {return m_YieldTable[isotope];}
+      Yield& getYield(const std::string& isotope) {return m_YieldTable[isotope];}
 
    private:
       double                        m_Metallicity;       // in Z_sun
