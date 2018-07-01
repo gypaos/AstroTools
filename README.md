@@ -33,24 +33,6 @@ $ cd $ASTROTOOLS/tools
 $ cmake ./
 $ make
 ```
-
-
-A step by step series of examples that tell you how to get a development env running
-
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
-
 ## Running the tests
 
 There are a few automated tests which check that the build was properly done. Tests can be run with the following commands:
@@ -79,5 +61,5 @@ This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* Thanks to [A. Matta](https://github.com/adrien-matta/) for useful discussions on the library structure, introduction to cmake.
+* Thanks to [A. Matta](https://github.com/adrien-matta/) for useful discussions on the library structure and introduction to cmake.
 
