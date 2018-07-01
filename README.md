@@ -13,6 +13,28 @@ You need to install the following software
 
 ### Installing
 
+First get the source code from github
+```
+$ git clone https://github.com/gypaos/AstroTools
+```
+
+Then define the ASTROTOOLS environment variable in your .bashrc file
+```
+$ export ASTROTOOLS=/path/to/AstroTools/directory
+```
+or in your .cshrc file
+```
+$ setenv ASTROTOOLS=/path/to/AstroTools/directory
+```
+
+You can then build the project using the followind commands
+```
+$ cd $ASTROTOOLS/tools
+$ cmake ./
+$ make
+```
+
+
 A step by step series of examples that tell you how to get a development env running
 
 Say what the step will be
