@@ -1,4 +1,4 @@
-# Project Title
+# AstroTools 
 
 AstroTools contains very basic libraries reading stellar yields, stellar lifetimes, nuclear properties and providing Monte Carlo simulation of stellar clusters.
 
@@ -72,7 +72,7 @@ We use [SemVer](http://semver.org/) for versioning. For the versions available, 
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
+* **Nicolas de Séréville** - *Initial work* - [gypaos](https://github.com/gypaos)
 
 See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
 
