@@ -37,7 +37,7 @@ $ make
 
 There are a few automated tests which check that the build was properly done. Tests can be run with the following commands:
 ```
-$ cd $ASTROTOOLS/tests
+$ cd $ASTROTOOLS/tools/tests
 $ ctest
 ```
 All tests should be passed, otherwise something wrong happened during the build or with setting the ASTROTOOLS environment variable.
@@ -46,7 +46,7 @@ All tests should be passed, otherwise something wrong happened during the build 
 ## Running example from a ROOT macro 
 First thing is to add ROOT support for AstroTools in your .rootlogon.C file:
 ```
-$ cd $ASTROTOOLS/util
+$ cd $ASTROTOOLS/tools/util
 $ ./rootlogon.sh
 ```
 This will add the following three lines in your .rootlogon.C if they don't exist already:
