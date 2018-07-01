@@ -8,11 +8,8 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
-
-```
-Give examples
-```
+You need to install the following software
+* [ROOT](https://root.cern.ch/) - The Data Analysis Framework from CERN
 
 ### Installing
 
