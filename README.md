@@ -4,7 +4,7 @@ AstroTools contains very basic libraries reading stellar yields, stellar lifetim
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 ### Prerequisites
 
@@ -27,7 +27,7 @@ or in your .cshrc file
 $ setenv ASTROTOOLS=/path/to/AstroTools/directory
 ```
 
-You can then build the project using the followind commands
+You can then build the project using the following commands
 ```
 $ cd $ASTROTOOLS/tools
 $ cmake ./
@@ -53,27 +53,15 @@ End with an example of getting some data out of the system or using it for a lit
 
 ## Running the tests
 
-Explain how to run the automated tests for this system
-
-### Break down into end to end tests
-
-Explain what these tests test and why
-
+There are a few automated tests which check that the build was properly done. Tests can be run with the following commands:
 ```
-Give an example
+$ cd tests
+$ ctest
 ```
+All tests should be passed, otherwise something wrong happened during the build.
 
-### And coding style tests
 
-Explain what these tests test and why
-
-```
-Give an example
-```
-
-## Deployment
-
-Add additional notes about how to deploy this on a live system
+## Running the example 
 
 ## Built With
 
