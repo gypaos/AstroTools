@@ -37,16 +37,16 @@ $ make
 
 There are a few automated tests which check that the build was properly done. Tests can be run with the following commands:
 ```
-$ cd tests
+$ cd $ASTROTOOLS/tests
 $ ctest
 ```
 All tests should be passed, otherwise something wrong happened during the build or with setting the ASTROTOOLS environment variable.
 
 
-## Running the example 
+## Running example from a ROOT macro 
 First thing is to add ROOT support for AstroTools in your .rootlogon.C file:
 ```
-$ cd util
+$ cd $ASTROTOOLS/util
 $ ./rootlogon.sh
 ```
 
@@ -57,6 +57,8 @@ $ root -l
 root [0] .L SLR.C+
 root [1] SLR()
 ```
+
+You should obtain the following canvas:
 
 ## Built With
 
