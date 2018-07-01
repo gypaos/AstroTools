@@ -28,7 +28,7 @@ then
     sed -i -e 's#{#{\
    // config AstroTools\
    TString AstroPath = gSystem->Getenv(\"ASTROTOOLS\");\
-   gROOT->ProcessLine(Form(\".x %s/tools/scripts/LibsPersoAstroRootLogon.C+\", AstroPath.Data()));\
+   gROOT->ProcessLine(Form(\".x %s/tools/util/LibsPersoAstroRootLogon.C+\", AstroPath.Data()));\
 #g' ~/.rootlogon.C 
   else
     echo 'Some AstroTools libraries already loaded in .rootlogon.C; please check the file'
@@ -36,7 +36,7 @@ then
 
 else
   echo 'File .rootlogon.C was created'
-  cp $ASTROTOOLS/tools/scripts/rootlogon.C ~/.rootlogon.C
+  cp $ASTROTOOLS/tools/util/rootlogon.C ~/.rootlogon.C
 fi
 
 
