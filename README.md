@@ -40,10 +40,23 @@ There are a few automated tests which check that the build was properly done. Te
 $ cd tests
 $ ctest
 ```
-All tests should be passed, otherwise something wrong happened during the build.
+All tests should be passed, otherwise something wrong happened during the build or with setting the ASTROTOOLS environment variable.
 
 
 ## Running the example 
+First thing is to add ROOT support for AstroTools in your .rootlogon.C file:
+```
+$ cd util
+$ ./rootlogon.sh
+```
+
+Then you can run the SLR.C example:
+```
+$ cd $ASTROTOOLS/tools/examples
+$ root -l
+root [0] .L SLR.C+
+root [1] SLR()
+```
 
 ## Built With
 
