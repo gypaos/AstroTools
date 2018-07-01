@@ -109,11 +109,11 @@ void StarClusterMC::displayCanvasControl() const
 {
    // number of massive stars distribution                                      
    m_can0->cd(1); 
-   for (Int_t i = 0; i < m_numberOfClusters; ++i) {                                  
+   for (unsigned int i = 0; i < m_numberOfClusters; ++i) {                                  
       m_hcontrol0->Draw("nostack");                                                     
    }                                                                            
    m_can0->cd(2);                                                                 
-   for (Int_t i = 0; i < m_numberOfClusters; ++i) {                                  
+   for (unsigned int i = 0; i < m_numberOfClusters; ++i) {                                  
       m_hcontrol1->Draw("nostack");                                                     
    }                                                                            
    // imf                                                                       
@@ -155,7 +155,7 @@ void StarClusterMC::prepareCanvasControl()
 
    // control histograms for each cluster
    TH1F *hcontrol0_tmp, *hcontrol1_tmp;
-   for (int i = 0; i < m_numberOfClusters; ++i) {                                  
+   for (unsigned int i = 0; i < m_numberOfClusters; ++i) {                                  
       hcontrol0_tmp = new TH1F(Form("hcontrol0_%d",i), 
 			       Form("SN numbers in [%d, %d] Msun", 
 			       (int)m_massMin, (int)m_massMax), 50, 0, 50);
@@ -244,13 +244,13 @@ void StarClusterMC::run(int numberMCEvents)
    // random number initialization
    TRandom3 rndmMass, rndmVelocity;
 
-   for (int iEvt = 0; iEvt < numberMCEvents; iEvt++) {                                        
+   for (int iEvt = 0; iEvt < numberMCEvents; ++iEvt) {                                        
       std::vector<double> stellarMass, stellarLifeTime, explosionTime;                           
-      for (int iNumberCluster = 0; iNumberCluster < m_numberOfClusters; iNumberCluster++) {    // loop on number of "clusters"
+      for (unsigned int iNumberCluster = 0; iNumberCluster < m_numberOfClusters; ++iNumberCluster) {    // loop on number of "clusters"
          // initialize arrays
          nbMassiveStars[iNumberCluster] = 0;
          nbMassiveStarsTimeRange[iNumberCluster] = 0;
-         for (int iClusterSize = 0; iClusterSize < m_numberOfStarsInCluster[iNumberCluster]; iClusterSize++) {    // loop on number of stars in clusters
+         for (unsigned int iClusterSize = 0; iClusterSize < m_numberOfStarsInCluster[iNumberCluster]; ++iClusterSize) {    // loop on number of stars in clusters
             // generate random number                                           
             double xi = rndmMass.Rndm();                                         
             // use the Kroupa's modified IMF                                    

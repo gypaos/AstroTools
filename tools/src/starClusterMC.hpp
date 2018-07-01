@@ -57,7 +57,7 @@ class StarClusterMC
       // getters
 
    private:
-      std::vector<int>                    m_numberOfStarsInCluster;
+      std::vector<unsigned int>           m_numberOfStarsInCluster;
       std::vector<double>                 m_ageCluster;
       unsigned int                        m_numberOfClusters;
       double                              m_timeRange;                  // in Myr
