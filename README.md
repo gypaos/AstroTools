@@ -49,6 +49,12 @@ First thing is to add ROOT support for AstroTools in your .rootlogon.C file:
 $ cd $ASTROTOOLS/util
 $ ./rootlogon.sh
 ```
+This will add the following three lines in your .rootlogon.C if they don't exist already:
+```
+// config AstroUtilities 
+TString AstroPath = gSystem->Getenv("ASTROTOOLS");
+gROOT->ProcessLine(Form(".x %s/tools/util/LibsPersoAstroRootLogon.C+", AstroPath.Data()));
+```
 
 Then you can run the SLR.C example:
 ```
