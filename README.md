@@ -24,7 +24,7 @@ $ export ASTROTOOLS=/path/to/AstroTools/directory
 ```
 or in your .cshrc file
 ```
-$ setenv ASTROTOOLS=/path/to/AstroTools/directory
+$ setenv ASTROTOOLS /path/to/AstroTools/directory
 ```
 
 You can then build the project using the following commands
@@ -65,6 +65,7 @@ root [1] SLR()
 ```
 
 You should obtain the following canvas:
+![Alt text](./tools/examples/SLR.png "Title")
 
 ## Built With
 
